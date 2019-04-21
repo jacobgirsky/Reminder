@@ -9,9 +9,9 @@ public class Reminder {
 
     private String reminder;
     private Date dateToBeReminded;
-    private int timeToBeReminded;
+    private Date timeToBeReminded;
 
-    public Reminder(String reminder, Date dateToBeReminded, int timeToBeReminded) {
+    public Reminder(String reminder, Date dateToBeReminded, Date timeToBeReminded) {
         this.reminder = reminder;
         this.dateToBeReminded = dateToBeReminded;
         this.timeToBeReminded = timeToBeReminded;
@@ -33,11 +33,11 @@ public class Reminder {
         this.dateToBeReminded = dateToBeReminded;
     }
 
-    public int getTimeToBeReminded() {
+    public Date getTimeToBeReminded() {
         return timeToBeReminded;
     }
 
-    public void setTimeToBeReminder(int timeToBeReminder) {
+    public void setTimeToBeReminder(Date timeToBeReminder) {
         this.timeToBeReminded = timeToBeReminder;
     }
 

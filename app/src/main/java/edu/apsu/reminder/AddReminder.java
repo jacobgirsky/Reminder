@@ -3,30 +3,32 @@ package edu.apsu.reminder;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class AddReminder extends Activity {
 
-    TextView tv;
-    TextView tv2;
-
     Calendar calendar;
     DatePickerDialog datePickerDialog;
+    EditText et;
+    EditText et2;
 
     TimePickerDialog timePickerDialog;
     int currentHour;
     int currentMinute;
     String amPm;
+
+    String reminder;
+    String remindDate;
+    String remindTime;
 
 
     @Override
@@ -35,8 +37,21 @@ public class AddReminder extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_reminder);
 
-        tv = findViewById(R.id.date_tv);
-        tv2 = findViewById(R.id.time_tv);
+        Intent intent = getIntent();
+
+        reminder = intent.getStringExtra(MainActivity.REMINDER_KEY);
+        remindDate = intent.getStringExtra(MainActivity.REMINDER_DATE_KEY);
+        remindTime = intent.getStringExtra(MainActivity.REMINDER_TIME_KEY);
+
+
+        et = findViewById(R.id.reminder_et);
+        et.setText(reminder);
+
+        et = findViewById(R.id.date_et);
+        et.setText(remindDate);
+
+        et = findViewById(R.id.time_et);
+        et.setText(remindTime);
 
 
         findViewById(R.id.choose_date_button).setOnClickListener(new View.OnClickListener() {
@@ -61,10 +76,12 @@ public class AddReminder extends Activity {
         int month = calendar.get(Calendar.MONTH);
         int year = calendar.get(Calendar.YEAR);
 
+        et = findViewById(R.id.date_et);
+
         datePickerDialog = new DatePickerDialog(AddReminder.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                tv2.setText((month + 1) + "/" + dayOfMonth + "/" + year);
+                et.setText((month + 1) + "/" + dayOfMonth + "/" + year);
             }
         }, day, month, year);
         datePickerDialog.show();
@@ -76,6 +93,7 @@ public class AddReminder extends Activity {
         calendar = Calendar.getInstance();
         currentHour = calendar.get(Calendar.HOUR_OF_DAY);
         currentMinute = calendar.get(Calendar.MINUTE);
+        et2 = findViewById(R.id.time_et);
 
         timePickerDialog = new TimePickerDialog(AddReminder.this, new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -85,11 +103,33 @@ public class AddReminder extends Activity {
                 } else {
                     amPm = "AM";
                 }
-                tv.setText(String.format("%02d:%02d", hourOfDay, minutes) + amPm);
+                et2.setText(String.format("%02d:%02d", hourOfDay, minutes) + amPm);
             }
         }, currentHour, currentMinute, false);
 
         timePickerDialog.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        EditText editText = findViewById(R.id.reminder_et);
+        reminder = editText.getText().toString();
+
+        editText = findViewById(R.id.date_et);
+        remindDate = editText.getText().toString();
+
+
+        editText = findViewById(R.id.time_et);
+        remindTime = editText.getText().toString();
+
+            Intent intent = new Intent();
+            intent.putExtra(MainActivity.REMINDER_KEY, reminder);
+            intent.putExtra(MainActivity.REMINDER_DATE_KEY, remindDate);
+            intent.putExtra(MainActivity.REMINDER_TIME_KEY, remindTime);
+
+            setResult(RESULT_OK, intent);
+
+        super.onBackPressed(); //  will end up closing the activity
     }
 
 }
