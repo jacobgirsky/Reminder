@@ -42,21 +42,21 @@ public class MainActivity extends AppCompatActivity {
     public static final String REMINDER_DATE_KEY = "reminder_date_key";
     public static final String REMINDER_TIME_KEY = "reminder_time_key";
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        String arr[] = {"Hry", "There"};
 
-        List<Reminder> comments = readData();
+        ArrayList<Reminder> reminders = readData();
 
-        adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, comments);
+
+        ArrayAdapter<Reminder> adapters = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, reminders);
 
         listView = findViewById(R.id.listview);
-        listView.setAdapter(adapter);
+        listView.setAdapter(adapters);
 
     }
 
@@ -66,12 +66,14 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == R.id.menu_action_add) {
-            Intent intent = new Intent(getApplicationContext(), AddReminder.class);
-            startActivity(intent);
+            Intent intent = new Intent(this, AddReminder.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivityForResult(intent, REMINDER_REQUEST_CODE1);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -140,14 +142,14 @@ public class MainActivity extends AppCompatActivity {
                 throw new RuntimeException(e);
             }
 
-            addJoke(reminder, remindDate, remindTime);
+            addReminder(reminder, remindDate, remindTime);
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
     // adds a new Reminder object to the adapter
-    private void addJoke(String reminder, Date dateToBeReminded, Date timeToBeReminded) {
+    private void addReminder(String reminder, Date dateToBeReminded, Date timeToBeReminded) {
         Reminder myReminder = new Reminder(reminder, dateToBeReminded, timeToBeReminded);
         adapter.add(myReminder);
         writeData();

@@ -26,9 +26,9 @@ public class AddReminder extends Activity {
     int currentMinute;
     String amPm;
 
-    String reminder;
-    String remindDate;
-    String remindTime;
+    private String reminder;
+    private String remindDate;
+    private String remindTime;
 
 
     @Override
@@ -47,11 +47,7 @@ public class AddReminder extends Activity {
         et = findViewById(R.id.reminder_et);
         et.setText(reminder);
 
-        et = findViewById(R.id.date_et);
-        et.setText(remindDate);
 
-        et = findViewById(R.id.time_et);
-        et.setText(remindTime);
 
 
         findViewById(R.id.choose_date_button).setOnClickListener(new View.OnClickListener() {
