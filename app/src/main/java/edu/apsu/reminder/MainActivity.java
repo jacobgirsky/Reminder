@@ -1,5 +1,6 @@
 package edu.apsu.reminder;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -33,32 +35,47 @@ import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayAdapter<Reminder> adapter;
-    private final String DATA_FILE_NAME = "reminders.txt";
-    private ListView listView;
+    ArrayAdapter<Reminder> adapter;
+
+    private final String DATA_FILE_NAME = "reminders.dat";
+    //private ListView listView;
 
     private static final int REMINDER_REQUEST_CODE1 = 42;
     public static final String REMINDER_KEY = "reminder_key";
     public static final String REMINDER_DATE_KEY = "reminder_date_key";
     public static final String REMINDER_TIME_KEY = "reminder_time_key";
 
+    boolean delete = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String arr[] = {"Hry", "There"};
 
         ArrayList<Reminder> reminders = readData();
 
 
-        ArrayAdapter<Reminder> adapters = new ArrayAdapter<>(this,
+        adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, reminders);
 
-        listView = findViewById(R.id.listview);
-        listView.setAdapter(adapters);
+        ListView listView = findViewById(R.id.listview);
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Reminder reminder = (Reminder) parent.getItemAtPosition(position);
+                if (delete) {
+                    deleteReminder(reminder);
+                }
+                delete = false;
+            }
+        });
 
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -66,16 +83,22 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == R.id.menu_action_add) {
-            Intent intent = new Intent(this, AddReminder.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            Intent intent = new Intent(getApplicationContext(), AddReminder.class);
+            //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivityForResult(intent, REMINDER_REQUEST_CODE1);
+        } else if (item.getItemId() == R.id.menu_delete) {
+            delete = true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void deleteReminder(Reminder reminder) {
+        adapter.remove(reminder);
+        adapter.notifyDataSetChanged();
     }
 
     // reads the data from the array list into the file
@@ -94,21 +117,10 @@ public class MainActivity extends AppCompatActivity {
                 String dateStr = scanner.nextLine();
                 String strTime = scanner.nextLine();
 
-                DateFormat dateFormats = new SimpleDateFormat("hh:mm:ss");
 
-                DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd kk:mm:ss z yyyy", Locale.ENGLISH);
 
-                try {
-                    dateCreated = dateFormat.parse(dateStr);
-                    d = dateFormats.parse(strTime);
 
-                } catch (ParseException e) {
-                    // this is not supposed to happen
-                    // date value is in unexpected format
-                    throw new RuntimeException(e);
-                }
-
-                Reminder reminder = new Reminder(remind, dateCreated, d);
+                Reminder reminder = new Reminder(remind, dateStr, strTime);
                 reminders.add(reminder);
             }
             scanner.close();
@@ -116,40 +128,27 @@ public class MainActivity extends AppCompatActivity {
 
         }
         return reminders;
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REMINDER_REQUEST_CODE1 && requestCode == RESULT_OK) {
+
+        if (requestCode == REMINDER_REQUEST_CODE1 || requestCode == RESULT_OK) {
             String reminder = data.getStringExtra(REMINDER_KEY);
             String dateStr = data.getStringExtra(REMINDER_DATE_KEY);
             String timeStr = data.getStringExtra(REMINDER_TIME_KEY);
 
-            Date remindDate;
-            Date remindTime;
+            addReminder(reminder, dateStr, timeStr);
 
-            DateFormat dateFormats = new SimpleDateFormat("hh:mm:ss");
-
-            DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd kk:mm:ss z yyyy", Locale.ENGLISH);
-
-            try {
-                remindDate = dateFormat.parse(dateStr);
-                remindTime = dateFormats.parse(timeStr);
-
-            } catch (ParseException e) {
-                // this is not supposed to happen
-                // date value is in unexpected format
-                throw new RuntimeException(e);
-            }
-
-            addReminder(reminder, remindDate, remindTime);
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
+
     // adds a new Reminder object to the adapter
-    private void addReminder(String reminder, Date dateToBeReminded, Date timeToBeReminded) {
+    private void addReminder(String reminder, String dateToBeReminded, String timeToBeReminded) {
         Reminder myReminder = new Reminder(reminder, dateToBeReminded, timeToBeReminded);
         adapter.add(myReminder);
         writeData();

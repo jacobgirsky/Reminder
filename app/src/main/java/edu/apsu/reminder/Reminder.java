@@ -2,16 +2,17 @@ package edu.apsu.reminder;
 
 
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Timer;
 
 public class Reminder {
 
     private String reminder;
-    private Date dateToBeReminded;
-    private Date timeToBeReminded;
+    private String  dateToBeReminded;
+    private String timeToBeReminded;
 
-    public Reminder(String reminder, Date dateToBeReminded, Date timeToBeReminded) {
+    public Reminder(String reminder, String dateToBeReminded, String timeToBeReminded) {
         this.reminder = reminder;
         this.dateToBeReminded = dateToBeReminded;
         this.timeToBeReminded = timeToBeReminded;
@@ -25,19 +26,19 @@ public class Reminder {
         this.reminder = reminder;
     }
 
-    public Date getDateToBeReminded() {
+    public String getDateToBeReminded() {
         return dateToBeReminded;
     }
 
-    public void setDateToBeReminded(Date dateToBeReminded) {
+    public void setDateToBeReminded(String dateToBeReminded) {
         this.dateToBeReminded = dateToBeReminded;
     }
 
-    public Date getTimeToBeReminded() {
+    public String getTimeToBeReminded() {
         return timeToBeReminded;
     }
 
-    public void setTimeToBeReminder(Date timeToBeReminder) {
+    public void setTimeToBeReminder(String timeToBeReminder) {
         this.timeToBeReminded = timeToBeReminder;
     }
 
