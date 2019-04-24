@@ -26,12 +26,6 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
     Calendar calendar;
     DatePickerDialog datePickerDialog;
     EditText et;
-    EditText et2;
-
-    TimePickerDialog timePickerDialog;
-    int currentHour;
-    int currentMinute;
-    String amPm;
 
     private String reminder;
     private String remindDate;
@@ -61,7 +55,33 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
                 timePicker.show(getSupportFragmentManager(), "time picker");
             }
         });
+
+        findViewById(R.id.choose_date_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                date();
+            }
+        });
     }
+
+    // displays dialog for date picker
+    private void date() {
+        calendar = Calendar.getInstance();
+        final int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+
+        et = findViewById(R.id.date_et);
+
+        datePickerDialog = new DatePickerDialog(AddReminder.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                et.setText((month + 1) + "/" + dayOfMonth + "/" + year);
+            }
+        }, day, month, year);
+        datePickerDialog.show();
+    }
+
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -70,6 +90,7 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
         c.set(Calendar.MINUTE, minute);
         c.set(Calendar.SECOND, 0);
 
+        updateTimeText(c);
         startAlarm(c);
     }
 
@@ -83,6 +104,14 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
         }
 
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+    }
+
+    private void updateTimeText(Calendar c) {
+        String timeText = "Alarm set for: ";
+        timeText += DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime());
+
+        TextView timeTv = findViewById(R.id.time_et);
+        timeTv.setText(timeText);
     }
 
     @Override
