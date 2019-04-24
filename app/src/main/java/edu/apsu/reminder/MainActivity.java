@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter<Reminder> adapter;
 
     private final String DATA_FILE_NAME = "reminders.dat";
-    //private ListView listView;
 
     private static final int REMINDER_REQUEST_CODE1 = 42;
     public static final String REMINDER_KEY = "reminder_key";
@@ -53,14 +52,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+
         ArrayList<Reminder> reminders = readData();
 
 
         adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, reminders);
 
+
         ListView listView = findViewById(R.id.listview);
         listView.setAdapter(adapter);
+
+       // ReminderListAdapter adapter = new ReminderListAdapter(this, R.layout.row, reminders);
+        //listView.setAdapter(adapter);
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -75,8 +80,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -88,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (item.getItemId() == R.id.menu_action_add) {
             Intent intent = new Intent(getApplicationContext(), AddReminder.class);
-            //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivityForResult(intent, REMINDER_REQUEST_CODE1);
         } else if (item.getItemId() == R.id.menu_delete) {
             delete = true;
@@ -105,9 +108,6 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Reminder> readData() {
         ArrayList<Reminder> reminders = new ArrayList<>();
 
-        Date dateCreated;
-        Date d;
-
         try {
             FileInputStream fis = openFileInput(DATA_FILE_NAME);
             Scanner scanner = new Scanner(fis);
@@ -116,9 +116,6 @@ public class MainActivity extends AppCompatActivity {
                 String remind = scanner.nextLine();
                 String dateStr = scanner.nextLine();
                 String strTime = scanner.nextLine();
-
-
-
 
                 Reminder reminder = new Reminder(remind, dateStr, strTime);
                 reminders.add(reminder);
@@ -150,9 +147,10 @@ public class MainActivity extends AppCompatActivity {
     // adds a new Reminder object to the adapter
     private void addReminder(String reminder, String dateToBeReminded, String timeToBeReminded) {
         Reminder myReminder = new Reminder(reminder, dateToBeReminded, timeToBeReminded);
-        adapter.add(myReminder);
-        writeData();
-    }
+            adapter.add(myReminder);
+            writeData();
+        }
+
 
     // writes the data to the text file
     private void writeData() {

@@ -5,7 +5,9 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.media.Ringtone;
 import android.os.Build;
+import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 
 
@@ -13,12 +15,14 @@ public class NotificationHelper extends ContextWrapper {
     public static final String channelID = "channelID";
     public static final String channelName = "Channel Name";
 
+
     private NotificationManager mManager;
 
     public NotificationHelper(Context base) {
         super(base);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createChannel();
+
         }
     }
 
@@ -39,8 +43,8 @@ public class NotificationHelper extends ContextWrapper {
 
     public NotificationCompat.Builder getChannelNotification() {
         return new NotificationCompat.Builder(getApplicationContext(), channelID)
-                .setContentTitle("Alarm!")
-                .setContentText("Your AlarmManager is working.")
+                .setContentTitle("Reminder!")
+                .setContentText("Here is your reminder alarm!.")
                 .setSmallIcon(R.drawable.ic_alarm);
     }
 }
