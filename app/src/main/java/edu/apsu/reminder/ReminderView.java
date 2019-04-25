@@ -20,9 +20,14 @@ public class ReminderView extends Activity  {
             final String date = (String) intent.getStringExtra("date");
             final String time = (String) intent.getStringExtra("time");
             final String index = (String) intent.getStringExtra("index");
-            String reminder = "reminder: " + reminderText + "\n" + " date: " + date + "\n " + time;
-            TextView tv = findViewById(R.id.view_textView);
-            tv.setText(reminder);
+            TextView r_tv = findViewById(R.id.reminderText_textView);
+            r_tv.setText(reminderText);
+
+            TextView d_tv = findViewById(R.id.dateText_textView);
+            d_tv.setText(date);
+
+            TextView t_tv = findViewById(R.id.timeText_textView);
+            t_tv.setText(time);
         }
     }
 }

@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayAdapter<Reminder> adapter;
 
-    private final String DATA_FILE_NAME = "reminderss.dat";
+    private final String DATA_FILE_NAME = "remindersss.dat";
 
     private static final int REMINDER_REQUEST_CODE1 = 42;
     public static final String REMINDER_KEY = "reminder_key";
