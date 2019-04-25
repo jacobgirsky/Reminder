@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayAdapter<Reminder> adapter;
 
-    private final String DATA_FILE_NAME = "reminders.dat";
+    private final String DATA_FILE_NAME = "reminderss.dat";
 
     private static final int REMINDER_REQUEST_CODE1 = 42;
     public static final String REMINDER_KEY = "reminder_key";
@@ -75,7 +75,23 @@ public class MainActivity extends AppCompatActivity {
                     deleteReminder(reminder);
                 }
                 delete = false;
-            }
+
+                    final ListView listView = findViewById(R.id.listview);
+                    final String reminderText = reminder.getReminder();
+                    final String date = reminder.getDateToBeReminded();
+                    final String time = reminder.getTimeToBeReminded();
+                    final int index = position;
+
+                    Intent intent = new Intent(getApplicationContext(), ReminderView.class);
+                    intent.putExtra("reminder", reminderText);
+                    intent.putExtra("date", date);
+                    intent.putExtra("time", time);
+                    intent.putExtra("index", index + "");
+                    Log.i("open item ", index + "***************");
+                    startActivityForResult(intent, REMINDER_REQUEST_CODE1);
+
+
+                }
         });
 
     }
