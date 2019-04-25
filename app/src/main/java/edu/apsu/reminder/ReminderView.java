@@ -60,6 +60,7 @@ public String position = "-1";
 
     }
 
+    //this method gets the updated reminder after being edited
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         String reminderText = "", date = "", time = "";
@@ -92,6 +93,8 @@ public String position = "-1";
          }
     }
 
+    //moves the updated reminder information to main activity in order to replace
+    //the old reminder in list view with the new one!
     @Override
     public void onBackPressed() {
 

@@ -42,7 +42,7 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
         Intent intent = getIntent();
 
         if (intent != null) {
-
+            // getting the reminder information from ReminderView activity to be edited!
             reminder = intent.getStringExtra(MainActivity.REMINDER_KEY);
             remindDate = intent.getStringExtra(MainActivity.REMINDER_DATE_KEY);
             remindTime = intent.getStringExtra(MainActivity.REMINDER_TIME_KEY);
@@ -129,7 +129,7 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
     public void onBackPressed() {
 
             //Intent intent= new Intent(AddReminder.this,MainActivity.class);
-
+            //Adding new reminder
             EditText editText = findViewById(R.id.reminder_et);
             reminder = editText.getText().toString();
 
@@ -145,6 +145,7 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
             intent.putExtra(MainActivity.REMINDER_KEY, reminder);
             intent.putExtra(MainActivity.REMINDER_DATE_KEY, remindDate);
             intent.putExtra(MainActivity.REMINDER_TIME_KEY, remindTime);
+            //if the reminder is for editing, then will need to put its index
                  if (position != null) {
                      intent.putExtra("index", position);
                  }
@@ -154,8 +155,6 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
 
             super.onBackPressed(); //  will end up closing the activity
         }
-
-       /* startActivity(intent);
-        finish();*/
+        
     }
 }
