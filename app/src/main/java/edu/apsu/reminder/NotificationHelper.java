@@ -3,8 +3,10 @@ package edu.apsu.reminder;
 import android.annotation.TargetApi;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.media.Ringtone;
 import android.os.Build;
 import android.os.Vibrator;
@@ -46,5 +48,6 @@ public class NotificationHelper extends ContextWrapper {
                 .setContentTitle("Reminder!")
                 .setContentText("Here is your reminder alarm!.")
                 .setSmallIcon(R.drawable.ic_alarm);
+
     }
 }
