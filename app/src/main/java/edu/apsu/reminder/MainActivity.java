@@ -35,7 +35,8 @@ import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
 
-    ArrayAdapter<Reminder> adapter;
+    //ArrayAdapter<Reminder> adapter;
+    ReminderListAdapter reminderListAdapter;
 
     private final String DATA_FILE_NAME = "reminders.dat";
 
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String REMINDER_KEY = "reminder_key";
     public static final String REMINDER_DATE_KEY = "reminder_date_key";
     public static final String REMINDER_TIME_KEY = "reminder_time_key";
+
 
     boolean delete = false;
 
@@ -56,25 +58,23 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Reminder> reminders = readData();
 
 
-        adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, reminders);
+        //adapter = new ArrayAdapter<>(this,
+                //android.R.layout.simple_list_item_1, reminders);
 
 
         ListView listView = findViewById(R.id.listview);
-        listView.setAdapter(adapter);
-
-       // ReminderListAdapter adapter = new ReminderListAdapter(this, R.layout.row, reminders);
         //listView.setAdapter(adapter);
+
+        reminderListAdapter = new ReminderListAdapter(this, R.layout.row, reminders);
+        listView.setAdapter(reminderListAdapter);
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Reminder reminder = (Reminder) parent.getItemAtPosition(position);
-                if (delete) {
-                    deleteReminder(reminder);
-                }
-                delete = false;
+                deleteReminder(reminder);
+
             }
         });
 
@@ -95,13 +95,17 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, REMINDER_REQUEST_CODE1);
         } else if (item.getItemId() == R.id.menu_delete) {
             delete = true;
+            Toast.makeText(this, "Select the reminder you want to delete.", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void deleteReminder(Reminder reminder) {
-        adapter.remove(reminder);
-        adapter.notifyDataSetChanged();
+        if (delete) {
+            reminderListAdapter.remove(reminder);
+            reminderListAdapter.notifyDataSetChanged();
+        }
+        delete = false;
     }
 
     // reads the data from the array list into the file
@@ -131,15 +135,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == REMINDER_REQUEST_CODE1 || requestCode == RESULT_OK) {
-            String reminder = data.getStringExtra(REMINDER_KEY);
-            String dateStr = data.getStringExtra(REMINDER_DATE_KEY);
-            String timeStr = data.getStringExtra(REMINDER_TIME_KEY);
+        if (requestCode == REMINDER_REQUEST_CODE1) {
+            if (requestCode == RESULT_OK) {
+                String reminder = "";
+                if (data.hasExtra(REMINDER_KEY)) {
+                    reminder = data.getStringExtra(REMINDER_KEY);
+                }
+                String dateStr = "";
+                if (data.hasExtra(REMINDER_DATE_KEY)) {
+                    dateStr = data.getStringExtra(REMINDER_DATE_KEY);
+                }
+                String timeStr = "";
+                if (data.hasExtra(REMINDER_TIME_KEY)) {
+                    timeStr = data.getStringExtra(REMINDER_TIME_KEY);
+                }
 
-            addReminder(reminder, dateStr, timeStr);
+                addReminder(reminder, dateStr, timeStr);
 
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
+            } else {
+                super.onActivityResult(requestCode, resultCode, data);
+            }
         }
     }
 
@@ -147,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
     // adds a new Reminder object to the adapter
     private void addReminder(String reminder, String dateToBeReminded, String timeToBeReminded) {
         Reminder myReminder = new Reminder(reminder, dateToBeReminded, timeToBeReminded);
-            adapter.add(myReminder);
+            reminderListAdapter.add(myReminder);
             writeData();
         }
 
@@ -160,8 +175,8 @@ public class MainActivity extends AppCompatActivity {
             BufferedWriter bw = new BufferedWriter(osw);
             PrintWriter pw = new PrintWriter(bw);
 
-            for (int i = 0; i < adapter.getCount(); i++) {
-                Reminder reminder = adapter.getItem(i);
+            for (int i = 0; i < reminderListAdapter.getCount(); i++) {
+                Reminder reminder = reminderListAdapter.getItem(i);
                 pw.println(reminder.getReminder() + "\n" + reminder.getDateToBeReminded() + "\n" + reminder.getTimeToBeReminded());
             }
 

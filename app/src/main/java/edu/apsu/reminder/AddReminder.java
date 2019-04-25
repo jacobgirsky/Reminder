@@ -47,6 +47,9 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
         et = findViewById(R.id.reminder_et);
         et.setText(reminder);
 
+        et = findViewById(R.id.date_et);
+        et.setText(remindDate);
+
         Button buttonTimePicker = findViewById(R.id.choose_time_button);
         buttonTimePicker.setOnClickListener(new View.OnClickListener() {
             @Override
