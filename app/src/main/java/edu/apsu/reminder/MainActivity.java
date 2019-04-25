@@ -35,11 +35,13 @@ import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
 
+
+    public static ArrayList<Reminder> reminders;
     ArrayAdapter<Reminder> adapter;
+    private final String DATA_FILE_NAME = "reminders1.dat";
 
-    private final String DATA_FILE_NAME = "remindersss.dat";
-
-    private static final int REMINDER_REQUEST_CODE1 = 42;
+    public static final int REMINDER_REQUEST_CODE1 = 42;
+    public static final int REMINDER_REQUEST_CODE2 = 44;  // Request code for editing
     public static final String REMINDER_KEY = "reminder_key";
     public static final String REMINDER_DATE_KEY = "reminder_date_key";
     public static final String REMINDER_TIME_KEY = "reminder_time_key";
@@ -53,12 +55,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        ArrayList<Reminder> reminders = readData();
+        //ArrayList<Reminder> reminders = readData();
+        reminders = readData();
 
 
         adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, reminders);
-
 
         ListView listView = findViewById(R.id.listview);
         listView.setAdapter(adapter);
@@ -76,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 delete = false;
 
+                    //getting the reminder information to view it in ReminderView activity
                     final ListView listView = findViewById(R.id.listview);
                     final String reminderText = reminder.getReminder();
                     final String date = reminder.getDateToBeReminded();
@@ -83,12 +86,12 @@ public class MainActivity extends AppCompatActivity {
                     final int index = position;
 
                     Intent intent = new Intent(getApplicationContext(), ReminderView.class);
-                    intent.putExtra("reminder", reminderText);
-                    intent.putExtra("date", date);
-                    intent.putExtra("time", time);
+                    intent.putExtra(REMINDER_KEY, reminderText);
+                    intent.putExtra(REMINDER_DATE_KEY, date);
+                    intent.putExtra(REMINDER_TIME_KEY, time);
                     intent.putExtra("index", index + "");
                     Log.i("open item ", index + "***************");
-                    startActivityForResult(intent, REMINDER_REQUEST_CODE1);
+                    startActivityForResult(intent, REMINDER_REQUEST_CODE2);
 
 
                 }
@@ -146,14 +149,41 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.i("First Requestcode ", requestCode + "***************");
+        String reminder = "", dateStr = "", timeStr = "", position = "-1";
+        if (requestCode == REMINDER_REQUEST_CODE1 && resultCode == RESULT_OK && data != null) {
+            if (data.hasExtra(REMINDER_KEY) && data.hasExtra(REMINDER_DATE_KEY) && data.hasExtra(REMINDER_TIME_KEY)) {
 
-        if (requestCode == REMINDER_REQUEST_CODE1 || requestCode == RESULT_OK) {
-            String reminder = data.getStringExtra(REMINDER_KEY);
-            String dateStr = data.getStringExtra(REMINDER_DATE_KEY);
-            String timeStr = data.getStringExtra(REMINDER_TIME_KEY);
+                reminder = data.getStringExtra(REMINDER_KEY);
+                dateStr = data.getStringExtra(REMINDER_DATE_KEY);
+                timeStr = data.getStringExtra(REMINDER_TIME_KEY);
+                //position = data.getStringExtra("index");
+                    addReminder(reminder, dateStr, timeStr);
+            }
+        } //checking if the requestCode for editing => will just replace the editing item with the edited one
+        if (requestCode == REMINDER_REQUEST_CODE2 && resultCode == RESULT_OK && data != null) {
+                if (data.hasExtra(REMINDER_KEY) && data.hasExtra(REMINDER_DATE_KEY) && data.hasExtra(REMINDER_TIME_KEY)) {
 
-            addReminder(reminder, dateStr, timeStr);
+                    reminder = data.getStringExtra(REMINDER_KEY);
+                    dateStr = data.getStringExtra(REMINDER_DATE_KEY);
+                    timeStr = data.getStringExtra(REMINDER_TIME_KEY);
+                    position = data.getStringExtra("index");
+                   // if(data.hasExtra("index")){
+                        //getting the position
+                        int index = Integer.parseInt(position);
+                        Reminder reminderr = new Reminder(reminder,dateStr,timeStr);
+                        Log.i("EDITING MAIN ", index + "***************");
+                        //replacing the item in the arrayList with the updating item
+                        reminders.set(index,reminderr); //replacing the item in the arrayList with the updating item
+                    Log.i("Requestcode ", requestCode + "***************");
+                    Log.i("LIST ", reminders.toString() + "***************");
 
+                        ArrayAdapter<Reminder> adapter = new ArrayAdapter<Reminder>(this,
+                                android.R.layout.simple_list_item_1, reminders);
+                        ListView listView = findViewById(R.id.listview);
+                        listView.setAdapter(adapter);
+                        writeData();
+                }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }

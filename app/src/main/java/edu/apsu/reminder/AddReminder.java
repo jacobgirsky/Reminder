@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -21,7 +22,7 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class AddReminder extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener{
+public class AddReminder extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
 
     Calendar calendar;
     DatePickerDialog datePickerDialog;
@@ -30,6 +31,7 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
     private String reminder;
     private String remindDate;
     private String remindTime;
+    public String position;
 
 
     @Override
@@ -39,30 +41,39 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
 
         Intent intent = getIntent();
 
-        reminder = intent.getStringExtra(MainActivity.REMINDER_KEY);
-        remindDate = intent.getStringExtra(MainActivity.REMINDER_DATE_KEY);
-        remindTime = intent.getStringExtra(MainActivity.REMINDER_TIME_KEY);
+        if (intent != null) {
 
+            reminder = intent.getStringExtra(MainActivity.REMINDER_KEY);
+            remindDate = intent.getStringExtra(MainActivity.REMINDER_DATE_KEY);
+            remindTime = intent.getStringExtra(MainActivity.REMINDER_TIME_KEY);
+            position = intent.getStringExtra("index");
+            Log.i("open item ADDReminder ", position + "***************");
+        }else {
 
-        et = findViewById(R.id.reminder_et);
-        et.setText(reminder);
+            reminder = intent.getStringExtra(MainActivity.REMINDER_KEY);
+            remindDate = intent.getStringExtra(MainActivity.REMINDER_DATE_KEY);
+            remindTime = intent.getStringExtra(MainActivity.REMINDER_TIME_KEY);
+        }
 
-        Button buttonTimePicker = findViewById(R.id.choose_time_button);
-        buttonTimePicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment timePicker = new TimePickerFragment();
-                timePicker.show(getSupportFragmentManager(), "time picker");
-            }
-        });
+            et = findViewById(R.id.reminder_et);
+            et.setText(reminder);
 
-        findViewById(R.id.choose_date_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                date();
-            }
-        });
-    }
+            Button buttonTimePicker = findViewById(R.id.choose_time_button);
+            buttonTimePicker.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogFragment timePicker = new TimePickerFragment();
+                    timePicker.show(getSupportFragmentManager(), "time picker");
+                }
+            });
+
+            findViewById(R.id.choose_date_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    date();
+                }
+            });
+        }
 
     // displays dialog for date picker
     private void date() {
@@ -117,24 +128,34 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
     @Override
     public void onBackPressed() {
 
-        Intent intent = new Intent();
+            //Intent intent= new Intent(AddReminder.this,MainActivity.class);
 
-        EditText editText = findViewById(R.id.reminder_et);
-        reminder = editText.getText().toString();
+            EditText editText = findViewById(R.id.reminder_et);
+            reminder = editText.getText().toString();
 
-        editText = findViewById(R.id.date_et);
-        remindDate = editText.getText().toString();
+            editText = findViewById(R.id.date_et);
+            remindDate = editText.getText().toString();
 
 
-        editText = findViewById(R.id.time_et);
-        remindTime = editText.getText().toString();
-
+            editText = findViewById(R.id.time_et);
+            remindTime = editText.getText().toString();
+        if (reminder.length() != 0 && remindDate.length() != 0 && remindTime.length() != 0) {
+            Reminder reminderObj = new Reminder(reminder, remindDate, remindTime);
+            Intent intent = new Intent();
             intent.putExtra(MainActivity.REMINDER_KEY, reminder);
             intent.putExtra(MainActivity.REMINDER_DATE_KEY, remindDate);
             intent.putExtra(MainActivity.REMINDER_TIME_KEY, remindTime);
+                 if (position != null) {
+                     intent.putExtra("index", position);
+                 }
+            Log.i("PUT item ADDREMINDER", position + "***************");
 
             setResult(RESULT_OK, intent);
 
-        super.onBackPressed(); //  will end up closing the activity
+            super.onBackPressed(); //  will end up closing the activity
+        }
+
+       /* startActivity(intent);
+        finish();*/
     }
 }
