@@ -10,8 +10,8 @@
         android:layout_height="56dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="94dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="92dp"
         android:text="Reminder: "
         android:textColor="#00f"
         android:textSize="30sp" />
@@ -22,9 +22,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="94dp"
-        android:layout_marginEnd="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="97dp"
+        android:layout_marginEnd="12dp"
         android:layout_toEndOf="@+id/title_textView"
         android:textSize="30sp" />
 
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/title_textView"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="40dp"
         android:text="Date: "
         android:textColor="#00f"
@@ -47,7 +47,7 @@
         android:layout_below="@+id/reminderText_textView"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="52dp"
         android:layout_marginEnd="0dp"
         android:layout_toEndOf="@+id/date_textView"
         android:textSize="30sp" />
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/date_textView"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="13dp"
         android:layout_marginTop="40dp"
         android:text="Time: "
         android:textColor="#00f"
@@ -70,9 +70,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/dateText_textView"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="37dp"
+        android:layout_marginEnd="12dp"
         android:layout_toEndOf="@+id/time_textView"
         android:textSize="30sp" />
 
@@ -83,9 +83,9 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="323dp"
-        android:layout_marginBottom="0dp"
+        android:layout_marginStart="163dp"
+        android:layout_marginEnd="160dp"
+        android:layout_marginBottom="7dp"
         android:text="Edit" />
 
 </RelativeLayout>

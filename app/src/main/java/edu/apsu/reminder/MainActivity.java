@@ -1,21 +1,21 @@
 package edu.apsu.reminder;
 
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedWriter;
@@ -24,20 +24,14 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
 
 
     public static ArrayList<Reminder> reminders;
-    ArrayAdapter<Reminder> adapter;
+    MyAdapter adapter;
     private final String DATA_FILE_NAME = "reminders1.dat";
 
     public static final int REMINDER_REQUEST_CODE1 = 42;
@@ -53,20 +47,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
-        //ArrayList<Reminder> reminders = readData();
         reminders = readData();
 
-
-        adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, reminders);
-
         ListView listView = findViewById(R.id.listview);
-        listView.setAdapter(adapter);
 
-       // ReminderListAdapter adapter = new ReminderListAdapter(this, R.layout.row, reminders);
-        //listView.setAdapter(adapter);
+        adapter = new MyAdapter(this, reminders);
+        listView.setAdapter(adapter);
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -75,11 +61,11 @@ public class MainActivity extends AppCompatActivity {
                 Reminder reminder = (Reminder) parent.getItemAtPosition(position);
                 if (delete) {
                     deleteReminder(reminder);
-                }
-                delete = false;
+                    delete = false;
+
+                } else {
 
                     //getting the reminder information to view it in ReminderView activity
-                    final ListView listView = findViewById(R.id.listview);
                     final String reminderText = reminder.getReminder();
                     final String date = reminder.getDateToBeReminded();
                     final String time = reminder.getTimeToBeReminded();
@@ -92,9 +78,8 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("index", index + "");
                     Log.i("open item ", index + "***************");
                     startActivityForResult(intent, REMINDER_REQUEST_CODE2);
-
-
                 }
+            }
         });
 
     }
@@ -174,12 +159,12 @@ public class MainActivity extends AppCompatActivity {
                         Reminder reminderr = new Reminder(reminder,dateStr,timeStr);
                         Log.i("EDITING MAIN ", index + "***************");
                         //replacing the item in the arrayList with the updating item
-                        reminders.set(index,reminderr); //replacing the item in the arrayList with the updating item
+                        //reminders.set(index,reminderr); //replacing the item in the arrayList with the updating item
                     Log.i("Requestcode ", requestCode + "***************");
                     Log.i("LIST ", reminders.toString() + "***************");
 
-                        ArrayAdapter<Reminder> adapter = new ArrayAdapter<Reminder>(this,
-                                android.R.layout.simple_list_item_1, reminders);
+                       // ArrayAdapter<Reminder> adapter = new ArrayAdapter<Reminder>(this,
+                         //       android.R.layout.simple_list_item_1, reminders);
                         ListView listView = findViewById(R.id.listview);
                         listView.setAdapter(adapter);
                         writeData();
@@ -218,5 +203,4 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Error saving data", Toast.LENGTH_SHORT).show();
         }
     }
-
 }

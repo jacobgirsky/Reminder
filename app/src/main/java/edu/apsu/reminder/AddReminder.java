@@ -26,6 +26,7 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
 
     Calendar calendar;
     DatePickerDialog datePickerDialog;
+
     EditText et;
 
     private String reminder;
@@ -43,9 +44,9 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
 
         if (intent != null) {
             // getting the reminder information from ReminderView activity to be edited!
-            reminder = intent.getStringExtra(MainActivity.REMINDER_KEY);
-            remindDate = intent.getStringExtra(MainActivity.REMINDER_DATE_KEY);
-            remindTime = intent.getStringExtra(MainActivity.REMINDER_TIME_KEY);
+            reminder = intent.getStringExtra("reminder");
+            remindDate = intent.getStringExtra("date");
+            remindTime = intent.getStringExtra("time");
             position = intent.getStringExtra("index");
             Log.i("open item ADDReminder ", position + "***************");
         }else {
@@ -55,8 +56,15 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
             remindTime = intent.getStringExtra(MainActivity.REMINDER_TIME_KEY);
         }
 
-            et = findViewById(R.id.reminder_et);
-            et.setText(reminder);
+            EditText reminderET = findViewById(R.id.reminder_et);
+            reminderET.setText(reminder);
+
+            EditText dateET = findViewById(R.id.date_et);
+            dateET.setText(remindDate);
+
+            EditText timeET = findViewById(R.id.time_et);
+            timeET.setText(remindTime);
+
 
             Button buttonTimePicker = findViewById(R.id.choose_time_button);
             buttonTimePicker.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +89,7 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
         int month = calendar.get(Calendar.MONTH);
         int year = calendar.get(Calendar.YEAR);
+
 
         et = findViewById(R.id.date_et);
 
