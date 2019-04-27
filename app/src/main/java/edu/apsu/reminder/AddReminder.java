@@ -3,12 +3,14 @@ package edu.apsu.reminder;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -118,6 +120,8 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlertReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+
+
 
         if (c.before(Calendar.getInstance())) {
             c.add(Calendar.DATE, 1);

@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.media.Ringtone;
 import android.os.Build;
 import android.os.Vibrator;
@@ -17,7 +18,6 @@ public class NotificationHelper extends ContextWrapper {
     public static final String channelID = "channelID";
     public static final String channelName = "Channel Name";
 
-
     private NotificationManager mManager;
 
     public NotificationHelper(Context base) {
@@ -27,6 +27,7 @@ public class NotificationHelper extends ContextWrapper {
 
         }
     }
+
 
     @TargetApi(Build.VERSION_CODES.O)
     private void createChannel() {
@@ -44,10 +45,19 @@ public class NotificationHelper extends ContextWrapper {
     }
 
     public NotificationCompat.Builder getChannelNotification() {
-        return new NotificationCompat.Builder(getApplicationContext(), channelID)
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_alarm)
                 .setContentTitle("Reminder!")
-                .setContentText("Here is your reminder alarm!.")
-                .setSmallIcon(R.drawable.ic_alarm);
+                .setContentText("Here is your reminder alarm!");
+
+        // Creates the intent needed to show the notification
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(contentIntent);
+
+        return builder;
 
     }
 }
+

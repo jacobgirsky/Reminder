@@ -12,7 +12,6 @@ public class Reminder {
     private String  dateToBeReminded;
     private String timeToBeReminded;
 
-
     public Reminder(String reminder, String dateToBeReminded, String timeToBeReminded) {
         this.reminder = reminder;
         this.dateToBeReminded = dateToBeReminded;
