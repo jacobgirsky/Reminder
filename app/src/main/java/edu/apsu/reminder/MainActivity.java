@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, REMINDER_REQUEST_CODE1);
         } else if (item.getItemId() == R.id.menu_delete) {
             delete = true;
+            Toast.makeText(this, "Select the reminder you wish to delete", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -139,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REMINDER_REQUEST_CODE1 && resultCode == RESULT_OK && data != null) {
             if (data.hasExtra(REMINDER_KEY) && data.hasExtra(REMINDER_DATE_KEY) && data.hasExtra(REMINDER_TIME_KEY)) {
 
-                reminder = data.getStringExtra(REMINDER_KEY);
+                reminder = data.getStringExtra(REMINDER_KEY).trim();
                 dateStr = data.getStringExtra(REMINDER_DATE_KEY);
                 timeStr = data.getStringExtra(REMINDER_TIME_KEY);
                 //position = data.getStringExtra("index");

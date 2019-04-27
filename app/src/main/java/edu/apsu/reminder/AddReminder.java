@@ -29,7 +29,8 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
     Calendar calendar;
     DatePickerDialog datePickerDialog;
 
-    EditText et;
+
+    TextView tv;
 
     private String reminder;
     private String remindDate;
@@ -58,14 +59,14 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
             remindTime = intent.getStringExtra(MainActivity.REMINDER_TIME_KEY);
         }
 
-            EditText reminderET = findViewById(R.id.reminder_et);
-            reminderET.setText(reminder);
+            TextView reminderTV = findViewById(R.id.reminder_et);
+            reminderTV.setText(reminder);
 
-            EditText dateET = findViewById(R.id.date_et);
-            dateET.setText(remindDate);
+            TextView dateTV = findViewById(R.id.date_et);
+            dateTV.setText(remindDate);
 
-            EditText timeET = findViewById(R.id.time_et);
-            timeET.setText(remindTime);
+            TextView timeTV = findViewById(R.id.time_et);
+            timeTV.setText(remindTime);
 
 
             Button buttonTimePicker = findViewById(R.id.choose_time_button);
@@ -93,12 +94,12 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
         int year = calendar.get(Calendar.YEAR);
 
 
-        et = findViewById(R.id.date_et);
+        tv = findViewById(R.id.date_et);
 
         datePickerDialog = new DatePickerDialog(AddReminder.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                et.setText((month + 1) + "/" + dayOfMonth + "/" + year);
+                tv.setText((month + 1) + "/" + dayOfMonth + "/" + year);
             }
         }, day, month, year);
         datePickerDialog.show();
@@ -143,15 +144,15 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
 
             //Intent intent= new Intent(AddReminder.this,MainActivity.class);
             //Adding new reminder
-            EditText editText = findViewById(R.id.reminder_et);
-            reminder = editText.getText().toString();
+            TextView textView = findViewById(R.id.reminder_et);
+            reminder = textView.getText().toString();
 
-            editText = findViewById(R.id.date_et);
-            remindDate = editText.getText().toString();
+            textView = findViewById(R.id.date_et);
+            remindDate = textView.getText().toString();
 
 
-            editText = findViewById(R.id.time_et);
-            remindTime = editText.getText().toString();
+            textView = findViewById(R.id.time_et);
+            remindTime = textView.getText().toString();
         if (reminder.length() != 0 && remindDate.length() != 0 && remindTime.length() != 0) {
             Reminder reminderObj = new Reminder(reminder, remindDate, remindTime);
             Intent intent = new Intent();
