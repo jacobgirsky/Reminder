@@ -104,7 +104,7 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
 
         tv = findViewById(R.id.date_et);
 
-        datePickerDialog = new DatePickerDialog(AddReminder.this, new DatePickerDialog.OnDateSetListener() {
+        datePickerDialog = new DatePickerDialog(AddReminder.this,R.style.DialogTheme,new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 tv.setText((month + 1) + "/" + dayOfMonth + "/" + year);
