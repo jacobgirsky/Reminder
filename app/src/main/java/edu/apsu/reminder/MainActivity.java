@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static ArrayList<Reminder> reminders;
     MyAdapter adapter;
-    private final String DATA_FILE_NAME = "reminders1.dat";
+    private final String DATA_FILE_NAME = "reminders2.dat";
 
     public static final int REMINDER_REQUEST_CODE1 = 42;
     public static final int REMINDER_REQUEST_CODE2 = 44;  // Request code for editing
