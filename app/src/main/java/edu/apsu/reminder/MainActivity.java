@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void deleteReminder(Reminder reminder) {
         adapter.remove(reminder);
+        writeData();
         adapter.notifyDataSetChanged();
     }
 
