@@ -53,7 +53,6 @@ public class ReminderView extends Activity {
                     intent.putExtra("date", date);
                     intent.putExtra("time", time);
                     intent.putExtra("index", index + "");
-                    Log.i("edit item ", index + "***************");
                     startActivityForResult(intent, REMINDER_REQUEST_CODE2);
                 }
             });
@@ -72,10 +71,6 @@ public class ReminderView extends Activity {
                 time = data.getStringExtra(REMINDER_TIME_KEY);
                 position = data.getStringExtra("index");
 
-                Log.i("REMINDER ", reminderText + "***************#######");
-                Log.i("DATEEEEEE ", date + "***************#######");
-                Log.i("TIMEEEEEE ", time + "***************#######");
-                Log.i("POSITION ", position + "***************");
                 int index = Integer.parseInt(position);
                 TextView r_tv = findViewById(R.id.reminderText_textView);
                 r_tv.setText(reminderText);
@@ -116,7 +111,6 @@ public class ReminderView extends Activity {
         intent.putExtra(MainActivity.REMINDER_DATE_KEY, remindDate);
         intent.putExtra(MainActivity.REMINDER_TIME_KEY, remindTime);
         intent.putExtra("index", position);
-        Log.i("PUT item ReminderView", position + "***************");
 
         setResult(RESULT_OK, intent);
         super.onBackPressed(); //  will end up closing the activity
