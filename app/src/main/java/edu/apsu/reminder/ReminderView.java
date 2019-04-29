@@ -16,8 +16,9 @@ import static edu.apsu.reminder.MainActivity.REMINDER_REQUEST_CODE2;
 import static edu.apsu.reminder.MainActivity.REMINDER_TIME_KEY;
 import static edu.apsu.reminder.MainActivity.reminders;
 
-public class ReminderView extends Activity  {
-public String position = "-1";
+public class ReminderView extends Activity {
+    public String position = "-1";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +44,7 @@ public String position = "-1";
 
             //when click edit button it will take the reminder information and open AddReminder activity
             Button edit_button;
-            edit_button = (Button)findViewById(R.id.editt_button);
+            edit_button = (Button) findViewById(R.id.editt_button);
             edit_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -53,7 +54,7 @@ public String position = "-1";
                     intent.putExtra("time", time);
                     intent.putExtra("index", index + "");
                     Log.i("edit item ", index + "***************");
-                    startActivityForResult(intent,REMINDER_REQUEST_CODE2 );
+                    startActivityForResult(intent, REMINDER_REQUEST_CODE2);
                 }
             });
         }
@@ -64,33 +65,34 @@ public String position = "-1";
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         String reminderText = "", date = "", time = "";
-        if(resultCode != RESULT_CANCELED){
-        if (requestCode == REMINDER_REQUEST_CODE2) {
-            reminderText = data.getStringExtra(REMINDER_KEY);
-            date = data.getStringExtra(REMINDER_DATE_KEY);
-            time = data.getStringExtra(REMINDER_TIME_KEY);
-            position = data.getStringExtra("index");
+        if (resultCode != RESULT_CANCELED) {
+            if (requestCode == REMINDER_REQUEST_CODE2) {
+                reminderText = data.getStringExtra(REMINDER_KEY);
+                date = data.getStringExtra(REMINDER_DATE_KEY);
+                time = data.getStringExtra(REMINDER_TIME_KEY);
+                position = data.getStringExtra("index");
 
-            Log.i("REMINDER ", reminderText + "***************#######");
-            Log.i("DATEEEEEE ", date + "***************#######");
-            Log.i("TIMEEEEEE ", time + "***************#######");
-            Log.i("POSITION ", position + "***************");
-            int index = Integer.parseInt(position);
-            TextView r_tv = findViewById(R.id.reminderText_textView);
-            r_tv.setText(reminderText);
+                Log.i("REMINDER ", reminderText + "***************#######");
+                Log.i("DATEEEEEE ", date + "***************#######");
+                Log.i("TIMEEEEEE ", time + "***************#######");
+                Log.i("POSITION ", position + "***************");
+                int index = Integer.parseInt(position);
+                TextView r_tv = findViewById(R.id.reminderText_textView);
+                r_tv.setText(reminderText);
 
-            TextView d_tv = findViewById(R.id.dateText_textView);
-            d_tv.setText(date);
+                TextView d_tv = findViewById(R.id.dateText_textView);
+                d_tv.setText(date);
 
-            TextView t_tv = findViewById(R.id.timeText_textView);
-            t_tv.setText(time);
+                TextView t_tv = findViewById(R.id.timeText_textView);
+                t_tv.setText(time);
 
-            Reminder reminder = new Reminder(reminderText,date,time);
-            reminders.set(index,reminder);
+                Reminder reminder = new Reminder(reminderText, date, time);
+                reminders.set(index, reminder);
 
-        } }else {
+            }
+        } else {
             super.onActivityResult(requestCode, resultCode, data);
-         }
+        }
     }
 
     //moves the updated reminder information to main activity in order to replace
@@ -99,7 +101,6 @@ public String position = "-1";
     public void onBackPressed() {
 
         Intent intent = new Intent();
-        //Intent intent= new Intent(AddReminder.this,MainActivity.class);
 
         TextView r_tv = findViewById(R.id.reminderText_textView);
         String reminderTX = r_tv.getText().toString();

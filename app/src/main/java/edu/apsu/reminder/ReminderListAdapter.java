@@ -27,7 +27,6 @@ class MyAdapter extends ArrayAdapter<Reminder> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
 
-        //View rowView = layoutInflater.inflate(R.layout.row, parent, false);
         convertView = layoutInflater.inflate(R.layout.row, parent, false);
 
         TextView tvReminder = convertView.findViewById(R.id.reminder_tv);

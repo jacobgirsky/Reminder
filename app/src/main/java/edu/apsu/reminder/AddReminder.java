@@ -155,7 +155,6 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
     @Override
     public void onBackPressed() {
 
-        //Intent intent= new Intent(AddReminder.this,MainActivity.class);
         //Adding new reminder
         TextView textView = findViewById(R.id.reminder_et);
         reminder = textView.getText().toString();
@@ -167,7 +166,6 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
         textView = findViewById(R.id.time_et);
         remindTime = textView.getText().toString();
         if (reminder.length() != 0 && remindDate.length() != 0 && remindTime.length() != 0) {
-            Reminder reminderObj = new Reminder(reminder, remindDate, remindTime);
             Intent intent = new Intent();
             intent.putExtra(MainActivity.REMINDER_KEY, reminder);
             intent.putExtra(MainActivity.REMINDER_DATE_KEY, remindDate);

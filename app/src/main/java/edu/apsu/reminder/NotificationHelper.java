@@ -62,9 +62,6 @@ public class NotificationHelper extends ContextWrapper {
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(contentIntent);
 
-
-
-
         return builder;
 
     }
