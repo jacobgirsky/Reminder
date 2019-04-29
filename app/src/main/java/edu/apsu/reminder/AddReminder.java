@@ -114,6 +114,7 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
     }
 
 
+    // when the time is set it will start the alarm
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         Calendar c = Calendar.getInstance();
@@ -125,6 +126,7 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
         startAlarm(c);
     }
 
+    // starts the alarm
     private void startAlarm(Calendar c) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlertReceiver.class);
@@ -138,6 +140,7 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
     }
 
+    // updates the text in the textview to show the time the user selects
     private void updateTimeText(Calendar c) {
         String timeText = "Alarm set for: ";
         timeText += DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime());
@@ -146,6 +149,7 @@ public class AddReminder extends AppCompatActivity implements TimePickerDialog.O
         timeTv.setText(timeText);
     }
 
+    // called when the user presses the cancel button
     private void cancelSave() {
         setResult(RESULT_CANCELED);
         finish();

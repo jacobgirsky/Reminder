@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // removes the reminder from the adapter
     private void deleteReminder(Reminder reminder) {
         adapter.remove(reminder);
         writeData();
